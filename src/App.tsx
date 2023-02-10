@@ -133,16 +133,13 @@ export class App extends React.Component<AppProps, AppState> {
                         <img src={logo} className={styles.headerImage} />
                     </div>
                 </div>
-
-                <>
-                    <span
-                        className={["container", styles.main].join(" ")}
-                        style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
-                    >
-                        <img src={img1} style={{ maxHeight: "15em", display: "block" }} />
-                        <img src={img2} style={{ maxHeight: "15rem", display: "block" }} />
-                    </span>
-                </>
+                <span
+                    className={["container", styles.main].join(" ")}
+                    style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
+                >
+                    <img src={img1} style={{ maxHeight: "15em", display: "block" }} />
+                    <img src={img2} style={{ maxHeight: "15rem", display: "block" }} />
+                </span>
 
                 <div className={["container", styles.main].join(" ")} style={{ paddingTop: 0 }}>
                     <div className={styles.buttonWrapper}>
@@ -176,29 +173,26 @@ export class App extends React.Component<AppProps, AppState> {
                         <div></div>
                     )}
                 </div>
-
-                <>
-                    <Modal
-                        isOpen={isOpen}
-                        className={styles.reactModalContent}
-                        overlayClassName={styles.reactModalOverlay}
-                    >
-                        <div className={styles.modalContentHelper}>
-                            <div
-                                className={styles.modalClose}
-                                onClick={function (this: any) {
-                                    this.setState({
-                                        isOpen: false,
-                                    });
-                                }.bind(this)}
-                            >
-                                <FaTimes />
-                            </div>
-
-                            <Form on-submit={this.onSubmit} />
+                <Modal
+                    isOpen={isOpen}
+                    className={styles.reactModalContent}
+                    overlayClassName={styles.reactModalOverlay}
+                >
+                    <div className={styles.modalContentHelper}>
+                        <div
+                            className={styles.modalClose}
+                            onClick={function (this: any) {
+                                this.setState({
+                                    isOpen: false,
+                                });
+                            }.bind(this)}
+                        >
+                            <FaTimes />
                         </div>
-                    </Modal>
-                </>
+
+                        <Form on-submit={this.onSubmit} />
+                    </div>
+                </Modal>
             </>
         );
     }
