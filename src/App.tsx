@@ -6,8 +6,8 @@ import { Button } from "./components/button";
 import ProductList from "./components/product-list-components";
 import { Form } from "./components/form";
 import logo from "./images/droppe-logo.png";
-import img1 from "./images/img1.png";
-import img2 from "./images/img2.png";
+import heroImageLeft from "./images/img1.png";
+import heroImageRight from "./images/img2.png";
 import styles from "./shopApp.module.css";
 
 /** App component props interface */
@@ -130,15 +130,15 @@ export class App extends React.Component<AppProps, AppState> {
             <>
                 <div className={styles.header}>
                     <div className={["container", styles.headerImageWrapper].join(" ")}>
-                        <img src={logo} className={styles.headerImage} />
+                        <img src={logo} alt="Droppe official shop" className={styles.headerImage} />
                     </div>
                 </div>
                 <span
                     className={["container", styles.main].join(" ")}
                     style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
                 >
-                    <img src={img1} style={{ maxHeight: "15em", display: "block" }} />
-                    <img src={img2} style={{ maxHeight: "15rem", display: "block" }} />
+                    <img src={heroImageLeft} alt="Droppe hero secrion left" style={{ maxHeight: "15em", display: "block" }} />
+                    <img src={heroImageRight} alt="Droppe hero section right" style={{ maxHeight: "15rem", display: "block" }} />
                 </span>
 
                 <div className={["container", styles.main].join(" ")} style={{ paddingTop: 0 }}>
