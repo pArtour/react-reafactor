@@ -127,7 +127,7 @@ export class App extends React.Component<AppProps, AppState> {
     render() {
         const { products, isOpen } = this.state;
         return (
-            <React.Fragment>
+            <>
                 <div className={styles.header}>
                     <div className={["container", styles.headerImageWrapper].join(" ")}>
                         <img src={logo} className={styles.headerImage} />
@@ -199,7 +199,7 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </Modal>
                 </>
-            </React.Fragment>
+            </>
         );
     }
 }
