@@ -8,7 +8,7 @@ import { Form } from "./components/form";
 import logo from "./images/droppe-logo.png";
 import heroImageLeft from "./images/img1.png";
 import heroImageRight from "./images/img2.png";
-import styles from "./shopApp.module.css";
+import styles from "./App.module.css";
 
 /** App component props interface */
 interface AppProps {}
@@ -41,14 +41,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         fetch("https://fakestoreapi.com/products").then((response) => {
             let jsonResponse = response.json();
-
-            jsonResponse.then((rawData) => {
-                let data = [];
-
-                for (let i = 0; i < rawData.length; i++) {
-                    let updatedProd = rawData[i];
-                    data.push(updatedProd);
-                }
+            jsonResponse.then((data) => {
                 this.setState({
                     products: data,
                 });
