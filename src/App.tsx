@@ -15,15 +15,13 @@ export const App: React.FC = () => {
     const [messageShown, setMessageShown] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
 
-    
 
     useEffect(() => {
-        fetch("https://fakestoreapi.com/products").then((response) => {
-            let jsonResponse = response.json();
-            jsonResponse.then((data) => {
-                setProducts(data);
-            });
-        });
+        (async () => {
+            const response = await fetch("https://fakestoreapi.com/products");
+            const data = await response.json();
+            setProducts(data);
+        })();
     }, []);
 
     const favClick = (product: IProduct) => {
@@ -39,28 +37,24 @@ export const App: React.FC = () => {
         setProducts(prods);
     };
 
-    const onSubmit = (product: IFormPayload) => {
+    const onSubmit = async (product: IFormPayload): Promise<void> => {
         closeModal();
-
         setMessageShown(true);
-
         setMessage("Adding product...");
 
         // **this POST request doesn't actually post anything to any database**
-        fetch("https://fakestoreapi.com/products", {
+        const response = await fetch("https://fakestoreapi.com/products", {
             method: "POST",
             body: JSON.stringify({
                 title: product.title,
                 price: product.price,
                 description: product.description,
             }),
-        })
-            .then((res) => res.json())
-            .then((newProduct) => {
-                setProducts((prevProducts) => [...prevProducts, { ...newProduct }]);
-                setMessageShown(false);
-                setMessage("");
-            });
+        });
+        const newProduct = await response.json();
+        setProducts((prevProducts) => [...prevProducts, { ...newProduct }]);
+        setMessageShown(false);
+        setMessage("");
     };
 
     const closeModal = () => {
