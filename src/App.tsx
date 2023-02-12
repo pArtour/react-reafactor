@@ -129,19 +129,27 @@ export class App extends React.Component<AppProps, AppState> {
         return (
             <>
                 <div className={styles.header}>
-                    <div className={["container", styles.headerImageWrapper].join(" ")}>
+                    <div className={`container ${styles.headerImageWrapper}`}>
                         <img src={logo} alt="Droppe official shop" className={styles.headerImage} />
                     </div>
                 </div>
                 <span
-                    className={["container", styles.main].join(" ")}
+                    className={`container ${styles.main}`}
                     style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
                 >
-                    <img src={heroImageLeft} alt="Droppe hero secrion left" style={{ maxHeight: "15em", display: "block" }} />
-                    <img src={heroImageRight} alt="Droppe hero section right" style={{ maxHeight: "15rem", display: "block" }} />
+                    <img
+                        src={heroImageLeft}
+                        alt="Droppe hero secrion left"
+                        style={{ maxHeight: "15em", display: "block" }}
+                    />
+                    <img
+                        src={heroImageRight}
+                        alt="Droppe hero section right"
+                        style={{ maxHeight: "15rem", display: "block" }}
+                    />
                 </span>
 
-                <div className={["container", styles.main].join(" ")} style={{ paddingTop: 0 }}>
+                <div className={`container ${styles.main}`} style={{ paddingTop: 0 }}>
                     <div className={styles.buttonWrapper}>
                         <span role="button">
                             <Button
@@ -173,11 +181,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <div></div>
                     )}
                 </div>
-                <Modal
-                    isOpen={isOpen}
-                    className={styles.reactModalContent}
-                    overlayClassName={styles.reactModalOverlay}
-                >
+                <Modal isOpen={isOpen} className={styles.reactModalContent} overlayClassName={styles.reactModalOverlay}>
                     <div className={styles.modalContentHelper}>
                         <div
                             className={styles.modalClose}
