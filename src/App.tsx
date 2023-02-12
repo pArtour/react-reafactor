@@ -15,7 +15,6 @@ export const App: React.FC = () => {
     const [messageShown, setMessageShown] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
 
-
     useEffect(() => {
         (async () => {
             const response = await fetch("https://fakestoreapi.com/products");
@@ -73,47 +72,43 @@ export const App: React.FC = () => {
 
     return (
         <>
-            <div className={styles.header}>
+            <header className={styles.header}>
                 <div className={`container ${styles.headerImageWrapper}`}>
                     <img src={logo} alt="Droppe official shop" className={styles.headerImage} />
                 </div>
-            </div>
-            <span
-                className={`container ${styles.main}`}
-                style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
-            >
-                <img
-                    src={heroImageLeft}
-                    alt="Droppe hero secrion left"
-                    style={{ maxHeight: "15em", display: "block" }}
-                />
-                <img
-                    src={heroImageRight}
-                    alt="Droppe hero section right"
-                    style={{ maxHeight: "15rem", display: "block" }}
-                />
-            </span>
-
-            <div className={`container ${styles.main}`} style={{ paddingTop: 0 }}>
-                <div className={styles.buttonWrapper}>
-                    <span role="button">
+            </header>
+            <main>
+                <section
+                    className={`container ${styles.main}`}
+                    style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
+                >
+                    <img
+                        src={heroImageLeft}
+                        alt="Droppe hero secrion left"
+                        style={{ maxHeight: "15em", display: "block" }}
+                    />
+                    <img
+                        src={heroImageRight}
+                        alt="Droppe hero section right"
+                        style={{ maxHeight: "15rem", display: "block" }}
+                    />
+                </section>
+                <section className={`container ${styles.main}`} style={{ paddingTop: 0 }}>
+                    <div className={styles.buttonWrapper}>
                         <Button onClick={openModal}>Send product proposal</Button>
-                    </span>
-                    {messageShown && (
-                        <div className={styles.messageContainer}>
-                            <i>{message}</i>
-                        </div>
-                    )}
-                </div>
+                        {messageShown ? (
+                            <div className={styles.messageContainer}>
+                                <i>{message}</i>
+                            </div>
+                        ) : null}
+                    </div>
 
-                <div className={styles.statsContainer}>
-                    <span>Total products: {prodCount}</span>
-                    {" - "}
-                    <span>Number of favorites: {numFavorites}</span>
-                </div>
-
-                {products && !!products.length ? <Posts products={products} onFav={favClick} /> : null}
-            </div>
+                    <div className={styles.statsContainer}>
+                        Total products: {prodCount} - Number of favorites: {numFavorites}
+                    </div>
+                    {products && !!products.length ? <Posts products={products} onFav={favClick} /> : null}
+                </section>
+            </main>
             <Modal
                 isOpen={modalOpened}
                 className={styles.reactModalContent}
