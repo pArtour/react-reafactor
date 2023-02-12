@@ -1,5 +1,4 @@
 import * as React from "react";
-import lodash from 'lodash'
 import { FaStar } from "react-icons/fa";
 import styles from "./product-list-components.module.css";
 
@@ -18,7 +17,7 @@ export default class Posts extends React.Component<IPostsProps, {}> {
           <Product key={i} index={i} product={p} onFav={this.props.onFav} />
         );
     }
-    return <div>{lodash.reverse(productsarr)}</div>
+    return <div>{productsarr.reverse()}</div>;
   }
 }
 
