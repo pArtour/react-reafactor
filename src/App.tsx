@@ -64,8 +64,10 @@ export const App: React.FC = () => {
         setModalOpened(true);
     };
 
+    /** Total number of products */
     const prodCount = useMemo(() => products.length, [products]);
 
+    /** Number of favorite products */
     const numFavorites = useMemo(() => {
         return products.filter((product) => product.isFavorite).length;
     }, [products]);
@@ -82,16 +84,8 @@ export const App: React.FC = () => {
                     className={`container ${styles.main}`}
                     style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
                 >
-                    <img
-                        src={heroImageLeft}
-                        alt="Droppe hero secrion left"
-                        style={{ maxHeight: "15em", display: "block" }}
-                    />
-                    <img
-                        src={heroImageRight}
-                        alt="Droppe hero section right"
-                        style={{ maxHeight: "15rem", display: "block" }}
-                    />
+                    <img src={heroImageLeft} alt="Droppe hero secrion left" style={{ maxHeight: "15em" }} />
+                    <img src={heroImageRight} alt="Droppe hero section right" style={{ maxHeight: "15rem" }} />
                 </section>
                 <section className={`container ${styles.main}`} style={{ paddingTop: 0 }}>
                     <div className={styles.buttonWrapper}>
