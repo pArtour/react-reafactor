@@ -17,11 +17,6 @@ export const App: React.FC = () => {
     const [message, setMessage] = useState<string>("");
     const [numFavorites, setNumFavorites] = useState<number>(0);
 
-
-    useEffect(() => {
-        document.title = "Droppe refactor app";
-    }, []);
-
     useEffect(() => {
         fetch("https://fakestoreapi.com/products").then((response) => {
             let jsonResponse = response.json();
