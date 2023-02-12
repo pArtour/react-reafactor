@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useMemo } from "react";
-import Modal from "react-modal";
+import React, { useEffect, useMemo, useState } from "react";
 import { FaTimes } from "react-icons/fa";
+import Modal from "react-modal";
+import styles from "./App.module.css";
 import { Button } from "./components/button";
-import { IProduct, ProductsList } from "./components/product-list-components";
 import { Form, IFormPayload } from "./components/form";
+import { IProduct } from "./components/Product";
+import { ProductsList } from "./components/product-list-components";
 import logo from "./images/droppe-logo.png";
 import heroImageLeft from "./images/img1.png";
 import heroImageRight from "./images/img2.png";
-import styles from "./App.module.css";
 
 export const App: React.FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
@@ -55,7 +56,6 @@ export const App: React.FC = () => {
         setMessageShown(false);
         setMessage("");
     };
-
 
     const closeModal = () => {
         setModalOpened(false);
