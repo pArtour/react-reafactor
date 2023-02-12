@@ -1,7 +1,11 @@
 import * as React from "react";
 import { Button } from "./button";
 import styles from "./form.module.css";
-
+export interface IFormPayload {
+  title: string;
+  description: string;
+  price: string;
+}
 type IFormProps = {
   "on-submit": (payload: { title: string; description: string; price: string }) => void;
 }

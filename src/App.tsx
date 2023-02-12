@@ -1,20 +1,21 @@
-import React, {useState, useEffect, useMemo} from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Modal from "react-modal";
 import { FaTimes } from "react-icons/fa";
 import { Button } from "./components/button";
-import ProductList from "./components/product-list-components";
-import { Form } from "./components/form";
+import { IProduct, Posts } from "./components/product-list-components";
+import { Form, IFormPayload } from "./components/form";
 import logo from "./images/droppe-logo.png";
 import heroImageLeft from "./images/img1.png";
 import heroImageRight from "./images/img2.png";
 import styles from "./App.module.css";
 
 export const App: React.FC = () => {
-    const [products, setProducts] = useState<any[]>([]);
+    const [products, setProducts] = useState<IProduct[]>([]);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [messageShown, setMessageShown] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
-    const [numFavorites, setNumFavorites] = useState<number>(0);
+
+    
 
     useEffect(() => {
         fetch("https://fakestoreapi.com/products").then((response) => {
@@ -25,34 +26,20 @@ export const App: React.FC = () => {
         });
     }, []);
 
-    const favClick = (title: string) => {
+    const favClick = (product: IProduct) => {
         const prods = [...products];
-        const idx = prods.findIndex((prod) => prod.title === title);
-        let currentFavs = numFavorites;
-        let totalFavs: any;
+        const idx = prods.findIndex((prod) => prod.id === product.id);
 
         if (prods[idx].isFavorite) {
             prods[idx].isFavorite = false;
-            totalFavs = --currentFavs;
         } else {
-            totalFavs = ++currentFavs;
             prods[idx].isFavorite = true;
         }
 
         setProducts(prods);
-        setNumFavorites(totalFavs);
     };
 
-    const onSubmit = (payload: { title: string; description: string; price: string }) => {
-        const updated = [...products];
-        updated.push({
-            title: payload.title,
-            description: payload.description,
-            price: payload.price,
-        });
-
-        setProducts(updated);
-
+    const onSubmit = (product: IFormPayload) => {
         closeModal();
 
         setMessageShown(true);
@@ -63,27 +50,32 @@ export const App: React.FC = () => {
         fetch("https://fakestoreapi.com/products", {
             method: "POST",
             body: JSON.stringify({
-                title: payload.title,
-                price: payload.price,
-                description: payload.description,
+                title: product.title,
+                price: product.price,
+                description: product.description,
             }),
         })
             .then((res) => res.json())
-            .then(() => {
+            .then((newProduct) => {
+                setProducts((prevProducts) => [...prevProducts, { ...newProduct }]);
                 setMessageShown(false);
                 setMessage("");
             });
     };
-    
+
     const closeModal = () => {
         setModalOpened(false);
-    }
+    };
 
     const openModal = () => {
         setModalOpened(true);
-    } 
+    };
 
-     const prodCount = useMemo(() => products.length, [products]);
+    const prodCount = useMemo(() => products.length, [products]);
+
+    const numFavorites = useMemo(() => {
+        return products.filter((product) => product.isFavorite).length;
+    }, [products]);
 
     return (
         <>
@@ -111,11 +103,7 @@ export const App: React.FC = () => {
             <div className={`container ${styles.main}`} style={{ paddingTop: 0 }}>
                 <div className={styles.buttonWrapper}>
                     <span role="button">
-                        <Button
-                            onClick={openModal}
-                        >
-                            Send product proposal
-                        </Button>
+                        <Button onClick={openModal}>Send product proposal</Button>
                     </span>
                     {messageShown && (
                         <div className={styles.messageContainer}>
@@ -130,16 +118,15 @@ export const App: React.FC = () => {
                     <span>Number of favorites: {numFavorites}</span>
                 </div>
 
-                {products && !!products.length ? (
-                    <ProductList products={products} onFav={favClick} />
-                ) : null}
+                {products && !!products.length ? <Posts products={products} onFav={favClick} /> : null}
             </div>
-            <Modal isOpen={modalOpened} className={styles.reactModalContent} overlayClassName={styles.reactModalOverlay}>
+            <Modal
+                isOpen={modalOpened}
+                className={styles.reactModalContent}
+                overlayClassName={styles.reactModalOverlay}
+            >
                 <div className={styles.modalContentHelper}>
-                    <div
-                        className={styles.modalClose}
-                        onClick={closeModal}
-                    >
+                    <div className={styles.modalClose} onClick={closeModal}>
                         <FaTimes />
                     </div>
 
@@ -148,4 +135,4 @@ export const App: React.FC = () => {
             </Modal>
         </>
     );
-}
+};
