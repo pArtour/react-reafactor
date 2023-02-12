@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState, useEffect, useMemo} from "react";
 import lodash from "lodash";
 import Modal from "react-modal";
 import { FaTimes } from "react-icons/fa";
@@ -16,50 +16,39 @@ interface AppProps {}
 /** App component state interface */
 interface AppState {
     products: any[];
-    isOpen: boolean;
-    isShowingMessage: boolean;
+    modalOpened: boolean;
+    messageShown: boolean;
     message: string;
     numFavorites: number;
     prodCount: number;
 }
 
-export class App extends React.Component<AppProps, AppState> {
-    constructor(props: AppProps) {
-        super(props);
 
-        this.favClick = this.favClick.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+export const App: React.FC<AppProps> = () => {
+    const [products, setProducts] = useState<any[]>([]);
+    const [modalOpened, setModalOpened] = useState<boolean>(false);
+    const [messageShown, setMessageShown] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
+    const [numFavorites, setNumFavorites] = useState<number>(0);
 
-        this.state = {
-            products: [],
-            isOpen: false,
-            isShowingMessage: false,
-            message: "",
-            numFavorites: 0,
-            prodCount: 0,
-        };
 
+    useEffect(() => {
+        document.title = "Droppe refactor app";
+    }, []);
+
+    useEffect(() => {
         fetch("https://fakestoreapi.com/products").then((response) => {
             let jsonResponse = response.json();
             jsonResponse.then((data) => {
-                this.setState({
-                    products: data,
-                });
-                this.setState({
-                    prodCount: data.length,
-                });
+                setProducts(data);
             });
         });
-    }
+    }, []);
 
-    componentDidMount() {
-        document.title = "Droppe refactor app";
-    }
-
-    favClick(title: string) {
-        const prods = this.state.products;
+    const favClick = (title: string) => {
+        const prods = lodash.clone(products);
         const idx = lodash.findIndex(prods, { title: title });
-        let currentFavs = this.state.numFavorites;
+        let currentFavs = numFavorites;
         let totalFavs: any;
 
         if (prods[idx].isFavorite) {
@@ -70,30 +59,25 @@ export class App extends React.Component<AppProps, AppState> {
             prods[idx].isFavorite = true;
         }
 
-        this.setState(() => ({ products: prods, numFavorites: totalFavs }));
-    }
+        setProducts(prods);
+        setNumFavorites(totalFavs);
+    };
 
-    onSubmit(payload: { title: string; description: string; price: string }) {
-        const updated = lodash.clone(this.state.products);
+    const onSubmit = (payload: { title: string; description: string; price: string }) => {
+        const updated = lodash.clone(products);
         updated.push({
             title: payload.title,
             description: payload.description,
             price: payload.price,
         });
 
-        this.setState({
-            products: updated,
-            prodCount: lodash.size(this.state.products) + 1,
-        });
+        setProducts(updated);
 
-        this.setState({
-            isOpen: false,
-        });
+        closeModal();
 
-        this.setState({
-            isShowingMessage: true,
-            message: "Adding product...",
-        });
+        setMessageShown(true);
+
+        setMessage("Adding product...");
 
         // **this POST request doesn't actually post anything to any database**
         fetch("https://fakestoreapi.com/products", {
@@ -105,92 +89,83 @@ export class App extends React.Component<AppProps, AppState> {
             }),
         })
             .then((res) => res.json())
-            .then((json) => {
-                (function (t) {
-                    setTimeout(() => {
-                        t.setState({
-                            isShowingMessage: false,
-                            message: "",
-                        });
-                    }, 2000);
-                })(this);
+            .then(() => {
+                setMessageShown(false);
+                setMessage("");
             });
+    };
+    
+    const closeModal = () => {
+        setModalOpened(false);
     }
 
-    render() {
-        const { products, isOpen } = this.state;
-        return (
-            <>
-                <div className={styles.header}>
-                    <div className={`container ${styles.headerImageWrapper}`}>
-                        <img src={logo} alt="Droppe official shop" className={styles.headerImage} />
-                    </div>
+    const openModal = () => {
+        setModalOpened(true);
+    } 
+
+     const prodCount = useMemo(() => lodash.size(products), [products]);
+
+    return (
+        <>
+            <div className={styles.header}>
+                <div className={`container ${styles.headerImageWrapper}`}>
+                    <img src={logo} alt="Droppe official shop" className={styles.headerImage} />
                 </div>
-                <span
-                    className={`container ${styles.main}`}
-                    style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
-                >
-                    <img
-                        src={heroImageLeft}
-                        alt="Droppe hero secrion left"
-                        style={{ maxHeight: "15em", display: "block" }}
-                    />
-                    <img
-                        src={heroImageRight}
-                        alt="Droppe hero section right"
-                        style={{ maxHeight: "15rem", display: "block" }}
-                    />
-                </span>
+            </div>
+            <span
+                className={`container ${styles.main}`}
+                style={{ margin: "50px inherit", display: "flex", justifyContent: "space-evenly" }}
+            >
+                <img
+                    src={heroImageLeft}
+                    alt="Droppe hero secrion left"
+                    style={{ maxHeight: "15em", display: "block" }}
+                />
+                <img
+                    src={heroImageRight}
+                    alt="Droppe hero section right"
+                    style={{ maxHeight: "15rem", display: "block" }}
+                />
+            </span>
 
-                <div className={`container ${styles.main}`} style={{ paddingTop: 0 }}>
-                    <div className={styles.buttonWrapper}>
-                        <span role="button">
-                            <Button
-                                onClick={function (this: any) {
-                                    this.setState({
-                                        isOpen: true,
-                                    });
-                                }.bind(this)}
-                            >
-                                Send product proposal
-                            </Button>
-                        </span>
-                        {this.state.isShowingMessage && (
-                            <div className={styles.messageContainer}>
-                                <i>{this.state.message}</i>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className={styles.statsContainer}>
-                        <span>Total products: {this.state.prodCount}</span>
-                        {" - "}
-                        <span>Number of favorites: {this.state.numFavorites}</span>
-                    </div>
-
-                    {products && !!products.length ? (
-                        <ProductList products={products} onFav={this.favClick} />
-                    ) : (
-                        <div></div>
+            <div className={`container ${styles.main}`} style={{ paddingTop: 0 }}>
+                <div className={styles.buttonWrapper}>
+                    <span role="button">
+                        <Button
+                            onClick={openModal}
+                        >
+                            Send product proposal
+                        </Button>
+                    </span>
+                    {messageShown && (
+                        <div className={styles.messageContainer}>
+                            <i>{message}</i>
+                        </div>
                     )}
                 </div>
-                <Modal isOpen={isOpen} className={styles.reactModalContent} overlayClassName={styles.reactModalOverlay}>
-                    <div className={styles.modalContentHelper}>
-                        <div
-                            className={styles.modalClose}
-                            onClick={function (this: any) {
-                                this.setState({
-                                    isOpen: false,
-                                });
-                            }.bind(this)}
-                        >
-                            <FaTimes />
-                        </div>
 
-                        <Form on-submit={this.onSubmit} />
+                <div className={styles.statsContainer}>
+                    <span>Total products: {prodCount}</span>
+                    {" - "}
+                    <span>Number of favorites: {numFavorites}</span>
+                </div>
+
+                {products && !!products.length ? (
+                    <ProductList products={products} onFav={favClick} />
+                ) : null}
+            </div>
+            <Modal isOpen={modalOpened} className={styles.reactModalContent} overlayClassName={styles.reactModalOverlay}>
+                <div className={styles.modalContentHelper}>
+                    <div
+                        className={styles.modalClose}
+                        onClick={closeModal}
+                    >
+                        <FaTimes />
                     </div>
-                </Modal>
-            </>
-        );
-    }
+
+                    <Form on-submit={onSubmit} />
+                </div>
+            </Modal>
+        </>
+    );
 }
