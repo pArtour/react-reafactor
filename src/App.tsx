@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Modal from "react-modal";
 import { FaTimes } from "react-icons/fa";
 import { Button } from "./components/button";
-import { IProduct, Posts } from "./components/product-list-components";
+import { IProduct, ProductsList } from "./components/product-list-components";
 import { Form, IFormPayload } from "./components/form";
 import logo from "./images/droppe-logo.png";
 import heroImageLeft from "./images/img1.png";
@@ -56,6 +56,7 @@ export const App: React.FC = () => {
         setMessage("");
     };
 
+
     const closeModal = () => {
         setModalOpened(false);
     };
@@ -100,7 +101,7 @@ export const App: React.FC = () => {
                     <div className={styles.statsContainer}>
                         Total products: {prodCount} - Number of favorites: {numFavorites}
                     </div>
-                    {products && !!products.length ? <Posts products={products} onFav={favClick} /> : null}
+                    {products && !!products.length ? <ProductsList products={products} onFav={favClick} /> : null}
                 </section>
             </main>
             <Modal

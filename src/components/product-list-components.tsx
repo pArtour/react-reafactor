@@ -1,8 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { FaStar } from "react-icons/fa";
 import styles from "./product-list-components.module.css";
 
-interface IPostsProps {
+interface IProductsList {
     products: IProduct[];
     onFav: (title: IProduct) => void;
 }
@@ -15,19 +15,15 @@ export interface IProduct {
     isFavorite: boolean;
     rating: { rate: number; count: number };
 }
-
-export class Posts extends React.Component<IPostsProps, {}> {
-    constructor(props: any) {
-        super(props);
-    }
-    render() {
-        let productsarr = [];
-        for (const [i, p] of this.props.products.entries()) {
-            productsarr.push(<Product key={i} index={i} product={p} onFav={this.props.onFav} />);
-        }
-        return <div>{productsarr.reverse()}</div>;
-    }
-}
+export const ProductsList: React.FC<IProductsList> = ({ products, onFav }) => {
+    return (
+        <div>
+            {products.map((product, index) => (
+                <Product key={index} index={index} product={product} onFav={onFav} />
+            ))}
+        </div>
+    );
+};
 
 export const Product: React.FC<{
     index: number;
