@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useMemo} from "react";
-import lodash from "lodash";
 import Modal from "react-modal";
 import { FaTimes } from "react-icons/fa";
 import { Button } from "./components/button";
@@ -27,8 +26,8 @@ export const App: React.FC = () => {
     }, []);
 
     const favClick = (title: string) => {
-        const prods = lodash.clone(products);
-        const idx = lodash.findIndex(prods, { title: title });
+        const prods = [...products];
+        const idx = prods.findIndex((prod) => prod.title === title);
         let currentFavs = numFavorites;
         let totalFavs: any;
 
@@ -45,7 +44,7 @@ export const App: React.FC = () => {
     };
 
     const onSubmit = (payload: { title: string; description: string; price: string }) => {
-        const updated = lodash.clone(products);
+        const updated = [...products];
         updated.push({
             title: payload.title,
             description: payload.description,
@@ -84,7 +83,7 @@ export const App: React.FC = () => {
         setModalOpened(true);
     } 
 
-     const prodCount = useMemo(() => lodash.size(products), [products]);
+     const prodCount = useMemo(() => products.length, [products]);
 
     return (
         <>
