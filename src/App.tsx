@@ -10,21 +10,7 @@ import heroImageLeft from "./images/img1.png";
 import heroImageRight from "./images/img2.png";
 import styles from "./App.module.css";
 
-/** App component props interface */
-interface AppProps {}
-
-/** App component state interface */
-interface AppState {
-    products: any[];
-    modalOpened: boolean;
-    messageShown: boolean;
-    message: string;
-    numFavorites: number;
-    prodCount: number;
-}
-
-
-export const App: React.FC<AppProps> = () => {
+export const App: React.FC = () => {
     const [products, setProducts] = useState<any[]>([]);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [messageShown, setMessageShown] = useState<boolean>(false);
