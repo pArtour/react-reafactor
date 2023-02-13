@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import Modal from "react-modal";
 import styles from "./App.module.css";
 import { Button } from "./components/button/button";
-import { Form, IFormPayload } from "./components/form";
+import { Form, IFormPayload } from "./components/form/form";
 import { IProduct } from "./components/product/Product";
 import { ProductsList } from "./components/product-list-components";
 import logo from "./images/droppe-logo.png";
@@ -37,22 +37,26 @@ export const App: React.FC = () => {
         setProducts(prods);
     };
 
-    const onSubmit = async (product: IFormPayload): Promise<void> => {
+    const createNewProduct = async (product: IFormPayload): Promise<void> => {
         closeModal();
         setMessageShown(true);
         setMessage("Adding product...");
 
-        // **this POST request doesn't actually post anything to any database**
-        const response = await fetch("https://fakestoreapi.com/products", {
-            method: "POST",
-            body: JSON.stringify({
-                title: product.title,
-                price: product.price,
-                description: product.description,
-            }),
-        });
-        const newProduct = await response.json();
-        setProducts((prevProducts) => [...prevProducts, { ...newProduct }]);
+        try {
+            // **this POST request doesn't actually post anything to any database**
+            const response = await fetch("https://fakestoreapi.com/products", {
+                method: "POST",
+                body: JSON.stringify({
+                    title: product.title,
+                    price: product.price,
+                    description: product.description,
+                }),
+            });
+            const newProduct = await response.json();
+            setProducts((prevProducts) => [...prevProducts, { ...newProduct }]);
+        } catch (error) {
+            setMessage("Something went wrong");
+        }
         setMessageShown(false);
         setMessage("");
     };
@@ -114,7 +118,7 @@ export const App: React.FC = () => {
                         <FaTimes />
                     </div>
 
-                    <Form on-submit={onSubmit} />
+                    <Form onSubmit={createNewProduct} />
                 </div>
             </Modal>
         </>

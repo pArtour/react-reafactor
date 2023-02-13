@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form > *:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.label {
+  font-family: "Open Sans";
+  color: #0f2137;
+  font-weight: 600;
+}
+
+.input {
+  font-family: "Open Sans";
+  font-size: 16px;
+  border: 1px solid #e3e4e8;
+  padding: 8px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #62bfad;
+}
+
+.textarea {
+  resize: none;
+}
