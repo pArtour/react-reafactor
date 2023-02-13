@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "./button";
+import { Button } from "./button/button";
 import styles from "./form.module.css";
 export interface IFormPayload {
   title: string;

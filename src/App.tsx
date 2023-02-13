@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import Modal from "react-modal";
 import styles from "./App.module.css";
-import { Button } from "./components/button";
+import { Button } from "./components/button/button";
 import { Form, IFormPayload } from "./components/form";
 import { IProduct } from "./components/Product";
 import { ProductsList } from "./components/product-list-components";
