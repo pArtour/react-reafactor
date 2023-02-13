@@ -1,17 +1,13 @@
 import React, { useRef } from "react";
-import { Button } from "../button/button";
-import styles from "./form.module.css";
+import { Button } from "../../../shared/components/Button/Button";
+import { CreateProductPayload } from "../../types/products/CreateProductPayload";
+import styles from "./ProductsForm.module.css";
 
-export interface IFormPayload {
-    title: string;
-    description: string;
-    price: string;
-}
-interface IFormProps {
-    onSubmit: (payload: IFormPayload) => Promise<void>;
+interface IProductsFormProps {
+    onSubmit: (payload: CreateProductPayload) => Promise<void>;
 }
 
-export const Form: React.FC<IFormProps> = ({ onSubmit }) => {
+export const ProductsForm: React.FC<IProductsFormProps> = ({ onSubmit }) => {
     let formRef = useRef<HTMLFormElement>(null);
     let titleRef = useRef<HTMLInputElement>(null);
     let priceRef = useRef<HTMLInputElement>(null);
