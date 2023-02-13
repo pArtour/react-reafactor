@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import styles from "./App.module.css";
 import { Button } from "./components/button/button";
 import { Form, IFormPayload } from "./components/form";
-import { IProduct } from "./components/Product";
+import { IProduct } from "./components/product/Product";
 import { ProductsList } from "./components/product-list-components";
 import logo from "./images/droppe-logo.png";
 import heroImageLeft from "./images/img1.png";

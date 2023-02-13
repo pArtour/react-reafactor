@@ -1,6 +1,6 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
-import { Button } from "./button/button";
+import { Button } from "../button/button";
 import styles from "./Product.module.css"
 
 export interface IProduct {
